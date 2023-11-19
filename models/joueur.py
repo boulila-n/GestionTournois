@@ -5,7 +5,7 @@ class Joueur:
         self.nom = nom
         self.prenom = prenom
         self.date_naissance = date_naissance
-
+''' 
     @property
     def serialize_joueur(self):
         return {
@@ -13,3 +13,4 @@ class Joueur:
             "nom": self.nom,
             "date_naissance": self.date_naissance
         }
+'''

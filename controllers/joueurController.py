@@ -2,6 +2,8 @@ from views.joueurView import JoueurView
 from views.menuView import MenuView
 from models.joueur import Joueur
 from tinydb import TinyDB
+from services.servicejoueur import ServiceJoueur
+
 
 db = TinyDB("./database/db.json")
 joueurs = db.table("joueurs")
@@ -14,9 +16,10 @@ class JoueurController:
         self.joueurs = joueurs
         self.joueur_view = JoueurView()
         self.menu_view = MenuView()
+        self.service_joueur = ServiceJoueur()
 
     def sauvegarderJoueur(self, jr: Joueur):
-        self.joueurs.insert(jr.serialize_joueur)
+        self.joueurs.insert(self.service_joueur.serialize_joueur(jr))
 
     def get_joueur_infos(self, prenom=None, nom=None):
         if (prenom and nom) is None:
