@@ -10,6 +10,8 @@ class MenuView(ABC):
         print(f'{"* MENU PRINCIPAL*"}'.center(119))
         print("1. Ajouter un nouveau joueur")
         print("2. Afficher la liste des joueurs")
+        print("3. Modifier joueur")
+        print("4. Créer un nouveau tournois")
         print("0. Quitter le programme")
         print(f'{"=" * 119}')
 

@@ -1,1 +1,41 @@
-{"joueurs": {"1": {"prenom": "samy", "nom": "salah", "date_naissance": "22/05/2020"}, "2": {"prenom": "55", "nom": "55", "date_naissance": "55"}}}
+{
+  "joueurs": {
+    "1": {
+      "prenom": "samy",
+      "nom": "SALAH",
+      "date_naissance": "03/03/2014"
+    },
+    "2": {
+      "prenom": "55",
+      "nom": "55",
+      "date_naissance": "55"
+    },
+    "3": {
+      "prenom": "aaaq",
+      "nom": "eeeea",
+      "date_naissance": "5468"
+    }
+  },
+  "tournois": {
+    "1": {
+      "nom": "Champion",
+      "lieu": null,
+      "date_debut": "0",
+      "date_fin": "0",
+      "description": "zzzzzz",
+      "list_joueur": [],
+      "list_tour": [],
+      "nbr_tour": null
+    },
+    "2": {
+      "nom": "champoion",
+      "lieu": "Tunisie",
+      "date_debut": "02/02/2022",
+      "date_fin": "03/03/2023",
+      "description": "final",
+      "list_joueur": [],
+      "list_tour": [],
+      "nbr_tour": "4"
+    }
+  }
+}

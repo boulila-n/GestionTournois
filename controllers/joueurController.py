@@ -21,8 +21,31 @@ class JoueurController:
     def sauvegarderJoueur(self, jr: Joueur):
         self.joueurs.insert(self.service_joueur.serialize_joueur(jr))
 
-    def get_joueur_infos(self, prenom=None, nom=None):
-        if (prenom and nom) is None:
+    def modifier(self):
+            prenom = self.menu_view.get_input(self, "le prénom", "joueur à modifier")
+            nom = self.menu_view.get_input(self, "le nom", "joueur à modifier")
+            result = None
+            for jr in self.joueurs:
+                if jr["prenom"] == prenom and jr["nom"] == nom:
+                    print("Le joueur est trouvé ")
+                    result = jr
+            if result:
+                self.saisie_modif(result)
+            else:
+                print("Joueur non trouvé ")
+
+    def saisie_modif(self, jr):
+        prenom1 = self.menu_view.get_input(self, "le nouveau prénom", "joueur")
+        nom1 = self.menu_view.get_input(self, "le nouveau nom", "joueur")
+        date_naiss = self.menu_view.get_input(self, "la nouvelle date de naissance", "joueur")
+        modif = Joueur(nom1, prenom1, date_naiss)
+        self.update_joueur(modif, jr.doc_id)
+        print("Modification avec succés !")
+
+    def update_joueur(self, joueur: Joueur, jr_id: int):
+        self.joueurs.update(self.service_joueur.serialize_joueur(joueur), doc_ids=[int(jr_id)])
+
+    def get_joueur_infos(self):
             prenom = self.menu_view.get_input(self, "le prénom", "joueur")
             nom = self.menu_view.get_input(self,"le nom", "joueur")
             date_naissance = self.menu_view.get_input(self, "la date de naissance", "joueur")
