@@ -15,6 +15,15 @@ class MenuView(ABC):
         print("0. Quitter le programme")
         print(f'{"=" * 119}')
 
+    def print_menu_tournois(self):
+        print(f'{"=" * 119}')
+        print(f'{"* MENU TOUTNOIS*"}'.center(119))
+        print("1. Ajouter des joueurs.")
+        print("2. Afficher la liste des participants par classement.")
+        print("3. Afficher la liste des participants par ordre alphabétique.")
+        print("0. Quitter le tournoi.")
+        print(f'{"=" * 119}')
+
     @staticmethod
     def get_choix(nbrchoix):
         choix = ""

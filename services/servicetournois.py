@@ -17,6 +17,6 @@ class ServiceTournois:
             "date_fin": tr.date_fin,
             "description": tr.description,
             "list_joueur": tr.list_joueur,
-            "list_tour": tr.list_tour,
+            "nbr_jr": tr.nbr_jr,
             "nbr_tour": tr.nbr_tour
         }

@@ -52,6 +52,7 @@ class JoueurController:
             joueur_1 = Joueur(nom, prenom, date_naissance)
             self.sauvegarderJoueur(joueur_1)
             print(f"{nom} {prenom} a bien été ajouté à la base de données")
+            return self.service_joueur.serialize_joueur(joueur_1)
 
     def print_infos(self, jr):
         self.joueur_view.print_jr_infos(

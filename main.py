@@ -19,9 +19,9 @@ class Main:
     def menu_tournois(self):
         choix = ""
         while choix != 0:
-            self.tournois_controller.menu_view.print_menu()
-            choix = self.tournois_controller.menu_view.get_choix(5)
-            self.appliquer_choix(choix)
+            self.tournois_controller.menu_view.print_menu_tournois()
+            choix = self.tournois_controller.menu_view.get_choix(4)
+            self.appliquer_choix_tournois(choix)
 
     def appliquer_choix(self, user_choix:int):
         if user_choix == 1:
@@ -37,6 +37,19 @@ class Main:
         else:
             pass
 
+    def appliquer_choix_tournois(self, user_choix: int):
+        if user_choix == 1:
+            self.ajouter_nv_jr()
+        elif user_choix == 2:
+            print("Afficher la liste des participants par classement")
+        elif user_choix == 3:
+            print("Afficher la liste des participants par ordre alphabétique.")
+        elif user_choix == 0:
+            self.exit_program()
+        else:
+            pass
+
+
     def exit_program(self):
         self.joueur_controller.menu_view.exit_program()
         sys.exit()
@@ -51,7 +64,8 @@ class Main:
         self.joueur_controller.modifier()
 
     def create_tournois(self):
-        self.tournois_controller.create()
+        self.tournois_controller.create_tournois()
+
 
 
 if __name__ == "__main__":
