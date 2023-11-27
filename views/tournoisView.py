@@ -6,10 +6,7 @@ class TournoisView:
         pass
 
     @staticmethod
-    def display_tournament_header():
-        '''Displays the tournaments table header.
-
-        '''
+    def print_titles():
         print("")
         print(f'{"=" * 140}')
         print(
@@ -18,33 +15,31 @@ class TournoisView:
             f"{'Lieu'.center(12)} | "
             f"{'Date de début'.center(13)} | "
             f"{'Date de fin'.center(13)} | "
-            f"{'Time control'.center(13)} | "
-            f"{'Nbre de tours'.center(10)} | "
-            f"{'Nbre joueur max'.center(10)} | "
-            f"{'Description'.center(20)}"
+            f"{'Description'.center(20)} | "
+            f"{'Nbre joueur max'.center(10)} "
             f"\n{'*' * 140}")
 
     @staticmethod
-    def display_tournament(
-            numero: int,
+    def afficher_tournement(
+            id: int,
             nom: str,
             lieu: str,
             date_debut: str,
             date_fin: str,
-            nbr_tour: int,
-            description: str
+            description: str,
+            nbr_jr: int
     ):
         '''Displays tournament info in a table.
 
         '''
         print(
-            f"{str(numero).center(4)} | "
+            f"{str(id).center(4)} | "
             f"{nom.center(15)} | "
             f"{lieu.center(12)} | "
             f"{date_debut.center(13)} | "
             f"{date_fin.center(13)} | "
-            f"{str(nbr_tour).center(13)} | "
-            f"{description.center(20)}"
+            f"{description.center(20)} | "
+            f"{str(nbr_jr).center(13)} "
             f"\n{'-' * 140}"
             f"\n{''}")
 

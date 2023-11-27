@@ -1,4 +1,4 @@
-
+from models.joueur import Joueur
 
 class Tournois:
 
@@ -8,9 +8,10 @@ class Tournois:
         self.lieu = lieu
         self.date_debut = date_debut
         self.date_fin = date_fin
-        self.list_joueur = list_joueur
         self.description = description
-        self.nbr_jr =nbr_jr
+        self.nbr_jr = nbr_jr
+        self.list_joueur = []
         self.nbr_tour = nbr_tour
+
 
 

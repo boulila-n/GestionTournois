@@ -12,6 +12,7 @@ class MenuView(ABC):
         print("2. Afficher la liste des joueurs")
         print("3. Modifier joueur")
         print("4. Créer un nouveau tournois")
+        print("5. Reprendre un tournois")
         print("0. Quitter le programme")
         print(f'{"=" * 119}')
 
