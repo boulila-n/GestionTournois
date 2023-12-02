@@ -27,13 +27,13 @@ class TournoisContoller:
         start_date = self.tournois_view.get_string_value("la date du début", "tournoi")
         end_date = self.tournois_view.get_string_value("la date de fin", "tournoi")
         description = self.tournois_view.get_string_value("la description", "tournoi")
-        number_of_turn = self.tournois_view.get_string_value("le nombre", f"tours ou laisser vide ({nbr_turn_default} par défaut)")
+        number_of_turn = int(self.tournois_view.get_string_value("le nombre", f"tours ou laisser vide ({nbr_turn_default} par défaut)"))
         nbr_jr =int(self.tournois_view.get_string_value("le nombre", "joueurs"))
-        list_joueur = []
-        tournament = Tournois(name, location, start_date, end_date, description,nbr_jr, list_joueur, number_of_turn)
-        self.sauvegarderTournois(tournament)
-        print (f"Le tournoi {tournament.nom} a été crée avec succès")
-        return tournament
+
+        tournament = Tournois(name, location, start_date, end_date, description,[], nbr_jr, number_of_turn)
+        new_id = self.sauvegarderTournois(tournament)
+        print(f"Le tournoi {tournament.nom} a été crée avec succès")
+        return self.get_tournoi_id(new_id)
 
     def afficher_liste_tournois(self):
         if self.tournois:
@@ -63,7 +63,7 @@ class TournoisContoller:
             tr["nbr_jr"])
 
     def sauvegarderTournois(self, tr: Tournois):
-        self.tournois.insert(self.service_tournois.serialize_tournois(tr))
+        return self.tournois.insert(self.service_tournois.serialize_tournois(tr))
 
     def get_tournoi_id(self, id: int):
         tournoi = self.tournois.get(doc_id=int(id))

@@ -21,7 +21,7 @@ class Main:
     def menu_tournois(self,tournoi):
         choix = ""
         while choix != 0:
-            self.tournois_controller.menu_view.print_menu_tournois()
+            self.tournois_controller.menu_view.print_menu_tournois(tournoi)
             choix = self.tournois_controller.menu_view.get_choix(6)
             self.appliquer_choix_tournois(choix,tournoi)
 
@@ -60,14 +60,21 @@ class Main:
 
     def ajouter_nv_joueur(self, tournoi):
         if tournoi:
-            joueur = self.joueur_controller.get_joueur_infos()
+            nbr = len(tournoi["list_joueur"])
+            total = tournoi["nbr_jr"]
             tr = self.service_tornoi.deserialize_tournois(tournoi)
-            tr.list_joueur.append(joueur)
-            tr.nbr_jr = tr.nbr_jr
+            if total - nbr > 0:
+                idj = self.joueur_controller.get_joueur_infos()
+                inserted_jr = self.joueur_controller.get_joueur_id(idj)
+                tr.list_joueur.append(inserted_jr)
+            else:
+                print(f'{"/" * 119}')
+                print(" *** La liste joueurs est compelte, vous pouvez lancez les tours de matchs ****")
+                print(f'{"/" * 119}')
+
             self.tournois_controller.update_tournoi(tr)
         else:
             self.joueur_controller.get_joueur_infos()
-
 
     def afficher_joueurs(self):
         self.joueur_controller.get_table()

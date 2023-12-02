@@ -19,7 +19,7 @@ class JoueurController:
         self.service_joueur = ServiceJoueur()
 
     def sauvegarderJoueur(self, jr: Joueur):
-        self.joueurs.insert(self.service_joueur.serialize_joueur(jr))
+        return self.joueurs.insert(self.service_joueur.serialize_joueur(jr))
 
     def modifier(self):
             prenom = self.menu_view.get_input(self, "le prénom", "joueur à modifier")
@@ -50,9 +50,15 @@ class JoueurController:
             nom = self.menu_view.get_input(self,"le nom", "joueur")
             date_naissance = self.menu_view.get_input(self, "la date de naissance", "joueur")
             joueur_1 = Joueur(nom, prenom, date_naissance)
-            self.sauvegarderJoueur(joueur_1)
+            id = self.sauvegarderJoueur(joueur_1)
             print(f"{nom} {prenom} a bien été ajouté à la base de données")
-            return self.service_joueur.serialize_joueur(joueur_1)
+            return id
+
+    def get_joueur_id(self, id: int):
+        jr = self.joueurs.get(doc_id=int(id))
+        if jr:
+            return jr
+        return None
 
     def print_infos(self, jr):
         self.joueur_view.print_jr_infos(

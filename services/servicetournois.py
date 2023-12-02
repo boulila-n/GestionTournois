@@ -1,6 +1,7 @@
 from models.tournois import Tournois
 from services.servicejoueur import ServiceJoueur
 
+
 class ServiceTournois:
 
     def __int__(self):
@@ -14,6 +15,7 @@ class ServiceTournois:
             "date_fin": tr.date_fin,
             "description": tr.description,
             "list_joueur": tr.list_joueur,
+            "tours": tr.tours,
             "nbr_jr": tr.nbr_jr,
             "nbr_tour": tr.nbr_tour
         }
