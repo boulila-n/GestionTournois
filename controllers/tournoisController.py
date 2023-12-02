@@ -74,3 +74,24 @@ class TournoisContoller:
     def update_tournoi(self,tournoi):
         self.tournois.update(
             self.service_tournois.serialize_tournois(tournoi), doc_ids=[tournoi.id])
+
+    def random_matchs(self, tr):
+        pairs = []
+        liste_jr = tr["list_joueur"]
+        nbr = tr["nbr_jr"]
+        jr1 = liste_jr[0: int(nbr / 2)]
+        jr2 = liste_jr[int(nbr / 2):]
+        for index in range(int(nbr / 2)):
+            pair = [jr1[index], jr2[index]]
+            pairs.append(pair)
+        return pairs
+
+    def afficher_jr(self, jr):
+        return jr["nom"] + " " + jr["prenom"]
+
+    def start_match(self, m):
+        nom_j1 = self.afficher_jr(m[0])
+        nom_j2 = self.afficher_jr(m[1])
+        print("MATCH :")
+        print(nom_j1 + " VS " + nom_j2)
+

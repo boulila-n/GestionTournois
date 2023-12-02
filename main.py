@@ -45,8 +45,10 @@ class Main:
         if user_choix == 1:
             self.ajouter_nv_joueur(tournoi)
         elif user_choix == 2:
-            print("Afficher la liste des participants par classement")
+            self.lancer_tour(tournoi)
         elif user_choix == 3:
+            print("Afficher la liste des participants par classement.")
+        elif user_choix == 4:
             print("Afficher la liste des participants par ordre alphabétique.")
         elif user_choix == 0:
             self.menu_principal()
@@ -98,6 +100,13 @@ class Main:
                 print("Aucun tournoi trouvé!")
         else:
             print("Liste de tournois vide")
+
+    def lancer_tour(self, tr):
+        matchs = self.tournois_controller.random_matchs(tr)
+        if matchs:
+            for m in matchs:
+                self.tournois_controller.start_match(m)
+        self.menu_tournois(tr)
 
 
 if __name__ == "__main__":
