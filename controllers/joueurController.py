@@ -3,7 +3,7 @@ from views.menuView import MenuView
 from models.joueur import Joueur
 from tinydb import TinyDB
 from services.servicejoueur import ServiceJoueur
-
+from datetime import datetime
 
 db = TinyDB("./database/db.json")
 joueurs = db.table("joueurs")
@@ -48,16 +48,17 @@ class JoueurController:
     def get_joueur_infos(self):
             prenom = self.menu_view.get_input(self, "le prénom", "joueur")
             nom = self.menu_view.get_input(self,"le nom", "joueur")
-            date_naissance = self.menu_view.get_input(self, "la date de naissance", "joueur")
+            date_naissance = self.menu_view.get_date(self,"la date de naissance", "joueur")
             joueur_1 = Joueur(nom, prenom, date_naissance)
             id = self.sauvegarderJoueur(joueur_1)
             print(f"{nom} {prenom} a bien été ajouté à la base de données")
             return id
 
     def get_joueur_id(self, id: int):
-        jr = self.joueurs.get(doc_id=int(id))
-        if jr:
-            return jr
+        if isinstance(id, int):
+            jr = self.joueurs.get(doc_id=int(id))
+            if jr:
+                return jr
         return None
 
     def print_infos(self, jr):

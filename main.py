@@ -22,7 +22,7 @@ class Main:
         choix = ""
         while choix != 0:
             self.tournois_controller.menu_view.print_menu_tournois(tournoi)
-            choix = self.tournois_controller.menu_view.get_choix(6)
+            choix = self.tournois_controller.menu_view.get_choix(7)
             self.appliquer_choix_tournois(choix,tournoi)
 
     def appliquer_choix(self, user_choix:int):
@@ -47,7 +47,8 @@ class Main:
         elif user_choix == 2:
             self.lancer_tour(tournoi)
         elif user_choix == 3:
-            print("Afficher la liste des participants par classement.")
+            print("LANCEMENT DES MATCHS :")
+            self.saisie_resultats_matchs(tournoi)
         elif user_choix == 4:
             print("Afficher la liste des participants par ordre alphabétique.")
         elif user_choix == 0:
@@ -55,10 +56,13 @@ class Main:
         else:
             pass
 
-
     def exit_program(self):
-        self.joueur_controller.menu_view.exit_program()
-        sys.exit()
+        confirm = self.tournois_controller.get_confirmation()
+        if confirm == "Y":
+            self.joueur_controller.menu_view.exit_program()
+            sys.exit()
+        else:
+            self.menu_principal()
 
     def ajouter_nv_joueur(self, tournoi):
         if tournoi:
@@ -66,17 +70,26 @@ class Main:
             total = tournoi["nbr_jr"]
             tr = self.service_tornoi.deserialize_tournois(tournoi)
             if total - nbr > 0:
-                idj = self.joueur_controller.get_joueur_infos()
+                idj = self.sasie_joueur_id()
                 inserted_jr = self.joueur_controller.get_joueur_id(idj)
-                tr.list_joueur.append(inserted_jr)
+                if inserted_jr:
+                    tr.list_joueur.append(inserted_jr)
+                else:
+                    print("Joueur introuvable dans la base, veuillez réssayer !")
             else:
-                print(f'{"/" * 119}')
-                print(" *** La liste joueurs est compelte, vous pouvez lancez les tours de matchs ****")
-                print(f'{"/" * 119}')
+                print(" *** La liste joueurs est compelte, vous pouvez lancez les tours de matchs ***")
 
             self.tournois_controller.update_tournoi(tr)
         else:
             self.joueur_controller.get_joueur_infos()
+
+    def sasie_joueur_id(self):
+        self.afficher_joueurs()
+        id = input(print(f"Veuillez saisir l'id de joueur à ajouter ou Entrer vide pour saisir un nouveau joueur : "))
+        if not id:
+            return self.joueur_controller.get_joueur_infos()
+        else:
+            return id
 
     def afficher_joueurs(self):
         self.joueur_controller.get_table()
@@ -102,11 +115,18 @@ class Main:
             print("Liste de tournois vide")
 
     def lancer_tour(self, tr):
-        matchs = self.tournois_controller.random_matchs(tr)
-        if matchs:
-            for m in matchs:
-                self.tournois_controller.start_match(m)
-        self.menu_tournois(tr)
+        nbr = len(tr["tours"])
+        joueurs = len(tr["list_joueur"])
+        nbrj = tr["nbr_jr"]
+        max = tr["nbr_tour"]
+        if nbr <= max and nbrj == joueurs:
+            self.tournois_controller.creer_tour(tr, nbr+1)
+            self.menu_tournois(tr)
+        else:
+            print("### Veuillez vérifier votre choix ###")
+
+    def saisie_resultats_matchs(self, tr):
+        pass
 
 
 if __name__ == "__main__":
