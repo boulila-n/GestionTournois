@@ -63,8 +63,8 @@ class JoueurController:
     def print_infos(self, jr):
         self.joueur_view.print_jr_infos(
             jr.doc_id,
-            jr["prenom"],
             jr["nom"],
+            jr["prenom"],
             jr["date_naissance"])
 
     def get_table(self):
@@ -73,3 +73,9 @@ class JoueurController:
             for j in self.joueurs:
                 self.print_infos(j)
             return self.joueurs
+
+    def sort_joueurs_alpha(self):
+        list = sorted(self.joueurs, key=lambda jr: (jr["nom"], jr["prenom"]))
+        self.joueur_view.print_titles()
+        for j in list:
+            self.print_infos(j)

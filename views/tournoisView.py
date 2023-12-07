@@ -54,4 +54,24 @@ class TournoisView:
             else:
                 return value
 
+    @staticmethod
+    def print_jr_infos(
+            nom: str,
+            prenom: str,
+            date_naissance: str
+    ):
+        print(
+            f"{nom.center(25)} | "
+            f"{prenom.center(25)} | "
+            f"{date_naissance.center(20)}"
+            f"\n{'-' * 119}")
 
+    @staticmethod
+    def print_titles():
+        print("")
+        print(f'{"=" * 90}')
+        print(
+            f"{'NOM'.center(25)} | "
+            f"{'PRENOM'.center(25)} | "
+            f"{'DATE_DE_NAISSANCE'.center(20)}"
+            f"\n{'*' * 90}")

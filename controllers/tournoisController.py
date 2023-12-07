@@ -208,3 +208,15 @@ class TournoisContoller:
                     "Veuillez saisir à nouveau s'il vous plaît."
                 )
             return confirm
+
+    def get_sorted_joueurs(self, tr):
+            list = sorted(tr["list_joueur"], key=lambda jr: (jr["nom"], jr["prenom"]))
+            self.tournois_view.print_titles()
+            for j in list:
+                self.print_infos_jr(j)
+
+    def print_infos_jr(self, jr):
+        self.tournois_view.print_jr_infos(
+            jr["nom"],
+            jr["prenom"],
+            jr["date_naissance"])

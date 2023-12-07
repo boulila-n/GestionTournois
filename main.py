@@ -15,7 +15,7 @@ class Main:
         choix = ""
         while choix != 0:
             self.joueur_controller.menu_view.print_menu()
-            choix = self.joueur_controller.menu_view.get_choix(6)
+            choix = self.joueur_controller.menu_view.get_choix(9)
             self.appliquer_choix(choix)
 
     def menu_tournois(self,tournoi):
@@ -36,6 +36,8 @@ class Main:
             self.creer_tournois()
         elif user_choix == 5:
             self.reprendre_tournois()
+        elif user_choix == 6:
+            self.tournois_controller.afficher_liste_tournois()
         elif user_choix == 0:
             self.exit_program()
         else:
@@ -49,7 +51,7 @@ class Main:
         elif user_choix == 3:
             pass
         elif user_choix == 4:
-            print("Afficher la liste des participants par ordre alphabétique.")
+            self.tournois_controller.get_sorted_joueurs(tournoi)
         elif user_choix == 0:
             self.menu_principal()
         else:
@@ -91,7 +93,7 @@ class Main:
             return id
 
     def afficher_joueurs(self):
-        self.joueur_controller.get_table()
+        self.joueur_controller.sort_joueurs_alpha()
 
     def modifier_joueur(self):
         self.joueur_controller.modifier()
