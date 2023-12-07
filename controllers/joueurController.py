@@ -55,10 +55,9 @@ class JoueurController:
             return id
 
     def get_joueur_id(self, id: int):
-        if isinstance(id, int):
-            jr = self.joueurs.get(doc_id=int(id))
-            if jr:
-                return jr
+        jr = self.joueurs.get(doc_id=int(id))
+        if jr:
+            return jr
         return None
 
     def print_infos(self, jr):

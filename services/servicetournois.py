@@ -1,4 +1,4 @@
-from models.tournois import Tournois
+from models.tournoi import Tournoi
 from models.tour import Tour
 from models.match import Match
 from services.servicejoueur import ServiceJoueur
@@ -9,7 +9,7 @@ class ServiceTournois:
     def __int__(self):
         self.service_jr = ServiceJoueur
 
-    def serialize_tournois(self, tr: Tournois):
+    def serialize_tournois(self, tr: Tournoi):
         return {
             "nom": tr.nom,
             "lieu": tr.lieu,
@@ -24,7 +24,7 @@ class ServiceTournois:
 
     def deserialize_tournois(self, tr):
         ## (self, nom, lieu, date_debut, date_fin, description, nbr_jr, nbr_tour=4, list_joueur=[], tours = [])
-        tournoi = Tournois(
+        tournoi = Tournoi(
             tr["nom"],
             tr["lieu"],
             tr["date_debut"],

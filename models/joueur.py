@@ -7,12 +7,3 @@ class Joueur:
         self.date_naissance = date_naissance
         self.rang = rang
         self.points = points
-''' 
-    @property
-    def serialize_joueur(self):
-        return {
-            "prenom": self.prenom,
-            "nom": self.nom,
-            "date_naissance": self.date_naissance
-        }
-'''

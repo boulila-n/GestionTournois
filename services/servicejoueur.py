@@ -9,5 +9,7 @@ class ServiceJoueur:
         return {
         "prenom": jr.prenom,
         "nom": jr.nom,
-        "date_naissance": jr.date_naissance
+        "date_naissance": jr.date_naissance,
+        "rang": jr.rang,
+        "points": jr.points
     }

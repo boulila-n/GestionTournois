@@ -47,8 +47,7 @@ class Main:
         elif user_choix == 2:
             self.lancer_tour(tournoi)
         elif user_choix == 3:
-            print("LANCEMENT DES MATCHS :")
-            self.saisie_resultats_matchs(tournoi)
+            pass
         elif user_choix == 4:
             print("Afficher la liste des participants par ordre alphabétique.")
         elif user_choix == 0:
@@ -120,13 +119,10 @@ class Main:
         nbrj = tr["nbr_jr"]
         max = tr["nbr_tour"]
         if nbr <= max and nbrj == joueurs:
-            self.tournois_controller.creer_tour(tr, nbr+1)
-            self.menu_tournois(tr)
+            db_tr = self.tournois_controller.creer_tour(tr, nbr+1)
+            self.menu_tournois(db_tr)
         else:
             print("### Veuillez vérifier votre choix ###")
-
-    def saisie_resultats_matchs(self, tr):
-        pass
 
 
 if __name__ == "__main__":

@@ -34,12 +34,11 @@ class MenuView(ABC):
         print("1. Ajouter des joueurs.")
         if total == nbr_jrs and nbr_tours < max_tour:
             print("2. Lancer le TOUR N° :", (len(tournoi["tours"]) +1))
-        if nbr_tours > 0:
-            print("3. Lancer les matchs de tour n:", (len(tournoi["tours"])))
-        print("4. Afficher la liste des participants par classement.")
-        print("5. Afficher la liste des participants par ordre alphabétique.")
+        print("3. Afficher la liste des participants par classement.")
+        print("4. Afficher la liste des participants par ordre alphabétique.")
         print("0. Quitter le tournoi.")
         print(f'{"=" * 119}')
+
 
     @staticmethod
     def get_choix(nbrchoix):
@@ -61,7 +60,7 @@ class MenuView(ABC):
         value = input(f"Veuillez saisir {attribut_1} du {attribut_2}: ")
         if not value:
             print("Votre saisie n'a pas été comprise")
-            print(f"veuillez rééssayer d'indiquer {attribut_1} du {attribut_2}")
+            value = input(f"veuillez rééssayer d'indiquer {attribut_1} du {attribut_2}: ")
         else:
             print(f"{attribut_1} du {attribut_2} est : {value}")
             return value

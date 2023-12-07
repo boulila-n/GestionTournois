@@ -1,7 +1,7 @@
 from models.joueur import Joueur
 
 
-class Tournois:
+class Tournoi:
 
     def __init__(self, nom, lieu, date_debut, date_fin, description, nbr_jr, nbr_tour=4, list_joueur=[], tours = []):
         """constructor"""

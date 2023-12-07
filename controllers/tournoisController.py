@@ -1,8 +1,9 @@
 from services.servicetournois import ServiceTournois
 from views.menuView import MenuView
-from models.tournois import Tournois
+from models.tournoi import Tournoi
 from models.match import Match
 from models.tour import Tour
+from models.joueur import Joueur
 from views.tournoisView import TournoisView
 from controllers.joueurController import JoueurController
 from tinydb import TinyDB
@@ -32,17 +33,17 @@ class TournoisContoller:
         end_date = self.menu_view.get_date(self, "la date de fin", "tournoi")
         description = self.tournois_view.get_string_value("la description", "tournoi")
         number_of_turn = self.tournois_view.get_string_value("le nombre", f"tours ou laisser vide ({nbr_turn_default} par défaut)")
-        if not number_of_turn:
-            number_of_turn = nbr_turn_default
-        else:
+        if number_of_turn:
             number_of_turn = int(number_of_turn)
+        else:
+            number_of_turn = nbr_turn_default
         nbr_jr = 0
         while nbr_jr < 2 * number_of_turn:
-            nbr_jr = self.tournois_view.get_string_value("le nombre", "joueurs")
+            nbr_jr = self.tournois_view.get_string_value("le nombre", "joueurs ( Au moins égal à 2 X nombre de tours.")
             if nbr_jr:
                 nbr_jr = int(nbr_jr)
 
-        tournament = Tournois(name, location, start_date, end_date, description, nbr_jr, number_of_turn)
+        tournament = Tournoi(name, location, start_date, end_date, description, nbr_jr, number_of_turn)
         new_id = self.sauvegarderTournois(tournament)
         print(f"Le tournoi {tournament.nom} a été crée avec succès")
         return self.get_tournoi_id(new_id)
@@ -74,7 +75,7 @@ class TournoisContoller:
             tr["description"],
             tr["nbr_jr"])
 
-    def sauvegarderTournois(self, tr: Tournois):
+    def sauvegarderTournois(self, tr: Tournoi):
         return self.tournois.insert(self.service_tournois.serialize_tournois(tr))
 
     def get_tournoi_id(self, id: int):
@@ -117,8 +118,9 @@ class TournoisContoller:
         round = Tour(name, str(created_at), matchs)
         tours = self.get_tr_tours(tr)
     ##self.update_tours(tours, tournoi, round)
-        db_round = self.entrer_resultats_matchs(self.service_tournois.serialize_tour(round))
+        db_round = self.entrer_resultats_matchs(self.service_tournois.serialize_tour(round), tr)
         self.update_tours(tours, tournoi, db_round)
+        return self.get_tournoi_id(tr.doc_id)
 
     def update_tours(self, tours, tournoi, round):
         tours.append(round)
@@ -141,10 +143,12 @@ class TournoisContoller:
                 list_matchs.append(self.convertir_to_match(m))
         return list_matchs
 
-    def entrer_resultats_matchs(self, tour):
+    def entrer_resultats_matchs(self, tour, tr):
         if tour and tour["matchs"]:
             for m in tour["matchs"]:
                 self.set_match_result(m)
+                self.set_points_jr(tr, m["joueur_1"], m["score_joueur_1"])
+                self.set_points_jr(tr, m["joueur_2"], m["score_joueur_2"])
             tour["termine"] = True
             tour["date_fin"] = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
             return tour
@@ -166,6 +170,12 @@ class TournoisContoller:
             else:
                 match["score_joueur_1"] = 0
                 match["score_joueur_2"] = 1
+
+    def set_points_jr(self, tr, jr, score):
+        list_jr = tr["list_joueur"]
+        for j in list_jr:
+            if (j["nom"] + " " + j["prenom"]) == jr:
+                j["points"] = j["points"] + score
 
     @staticmethod
     def tour_en_cours(tours):
