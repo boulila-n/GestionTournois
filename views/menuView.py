@@ -16,16 +16,14 @@ class MenuView(ABC):
         print("4. Créer un nouveau tournois")
         print("5. Reprendre un tournois")
         print("6. Afficher la liste de tous les tournois")
-        print("7. Reprendre un tournois")
-        print("8. Reprendre un tournois")
+        print("7. Rechercher un tournois")
         print("0. Quitter le programme")
         print(f'{"=" * 119}')
 
     def nbr_jr_ajoutes(self, tr):
-        return str(len(tr["list_joueur"])) + " AJOUTES PARMI " + str(tr["nbr_jr"])
+        return str(len(tr["list_joueur"])) + "/" + str(tr["nbr_jr"])
 
     def print_menu_tournois(self, tournoi):
-        ## FIXME check limit tours
         nbr_jrs = len(tournoi["list_joueur"])
         nbr_tours = len(tournoi["tours"])
         max_tour = tournoi["nbr_tour"]
@@ -33,12 +31,17 @@ class MenuView(ABC):
         print(f'{"=" * 119}')
         print(f'{"* MENU TOURNOIS*"}'.center(119))
         if tournoi and tournoi["nom"]:
-            print("###### TOURNOI : ", tournoi["nom"], " JOUEURS : " , self.nbr_jr_ajoutes(tournoi))
+            print("###### TOURNOI : ", tournoi["nom"], "| JOUEURS : " , self.nbr_jr_ajoutes(tournoi), "| TOURS : ", nbr_tours, "/", max_tour)
         print("1. Ajouter des joueurs.")
         if total == nbr_jrs and nbr_tours < max_tour:
             print("2. Lancer le TOUR N° :", (len(tournoi["tours"]) +1))
+        elif max_tour == nbr_tours:
+            print("*. Le Tournoi est terminé ! ")
+        else:
+            print("*.Le tournoi commencera avec tour 1 ")
         print("3. Afficher la liste des participants par classement.")
         print("4. Afficher la liste des participants par ordre alphabétique.")
+        print("5. Afficher la liste de tours et tous les matchs du tour.")
         print("0. Quitter le tournoi.")
         print(f'{"=" * 119}')
 

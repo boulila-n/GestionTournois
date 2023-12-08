@@ -38,6 +38,8 @@ class Main:
             self.reprendre_tournois()
         elif user_choix == 6:
             self.tournois_controller.afficher_liste_tournois()
+        elif user_choix == 7:
+            self.tournois_controller.get_tournoi_nom()
         elif user_choix == 0:
             self.exit_program()
         else:
@@ -49,9 +51,11 @@ class Main:
         elif user_choix == 2:
             self.lancer_tour(tournoi)
         elif user_choix == 3:
-            pass
+            self.tournois_controller.sort_joueur_score(tournoi)
         elif user_choix == 4:
             self.tournois_controller.get_sorted_joueurs(tournoi)
+        elif user_choix == 5:
+            self.tournois_controller.get_tous_tours(tournoi)
         elif user_choix == 0:
             self.menu_principal()
         else:
@@ -73,12 +77,14 @@ class Main:
             if total - nbr > 0:
                 idj = self.sasie_joueur_id()
                 inserted_jr = self.joueur_controller.get_joueur_id(idj)
+                inserted_jr["id"] = idj
+                inserted_jr["opposants"] = []
                 if inserted_jr:
                     tr.list_joueur.append(inserted_jr)
                 else:
                     print("Joueur introuvable dans la base, veuillez réssayer !")
             else:
-                print(" *** La liste joueurs est compelte, vous pouvez lancez les tours de matchs ***")
+                print(" *** La liste joueurs est compelte ***")
 
             self.tournois_controller.update_tournoi(tr)
         else:
@@ -120,7 +126,7 @@ class Main:
         joueurs = len(tr["list_joueur"])
         nbrj = tr["nbr_jr"]
         max = tr["nbr_tour"]
-        if nbr <= max and nbrj == joueurs:
+        if nbr < max and nbrj == joueurs:
             db_tr = self.tournois_controller.creer_tour(tr, nbr+1)
             self.menu_tournois(db_tr)
         else:

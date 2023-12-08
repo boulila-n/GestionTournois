@@ -3,7 +3,6 @@ from views.menuView import MenuView
 from models.joueur import Joueur
 from tinydb import TinyDB
 from services.servicejoueur import ServiceJoueur
-from datetime import datetime
 
 db = TinyDB("./database/db.json")
 joueurs = db.table("joueurs")

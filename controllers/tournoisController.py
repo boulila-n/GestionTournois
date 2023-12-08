@@ -8,6 +8,7 @@ from views.tournoisView import TournoisView
 from controllers.joueurController import JoueurController
 from tinydb import TinyDB
 import json
+from tinydb import Query
 from datetime import datetime
 
 
@@ -38,8 +39,8 @@ class TournoisContoller:
         else:
             number_of_turn = nbr_turn_default
         nbr_jr = 0
-        while nbr_jr < 2 * number_of_turn:
-            nbr_jr = self.tournois_view.get_string_value("le nombre", "joueurs ( Au moins égal à 2 X nombre de tours.")
+        while nbr_jr < 2 or nbr_jr % 2 != 0  :
+            nbr_jr = self.tournois_view.get_string_value("le nombre", "joueurs (* nombre pair au moins égal à deux *)")
             if nbr_jr:
                 nbr_jr = int(nbr_jr)
 
@@ -84,20 +85,22 @@ class TournoisContoller:
             return tournoi
         return None
 
-    def update_tournoi(self,tournoi):
+    def update_tournoi(self, tournoi):
         self.tournois.update(
             self.service_tournois.serialize_tournois(tournoi), doc_ids=[tournoi.id])
 
     def random_matchs(self, tr):
-        ## todo trier joueurs avec score
-        ## fixme check match unicity
         pairs = []
-        liste_jr = tr["list_joueur"]
-        nbr = tr["nbr_jr"]
-        jr1 = liste_jr[0: int(nbr / 2)]
-        jr2 = liste_jr[int(nbr / 2):]
-        for index in range(int(nbr / 2)):
-            pair = [jr1[index], jr2[index]]
+        liste_jr = sorted(tr["list_joueur"], key=lambda jr: (jr["points"]), reverse=True)
+        while liste_jr:
+            index = 1
+            while (index <= len(liste_jr) and len(liste_jr) > 2 and liste_jr[index]["id"] in liste_jr[0]["opposants"]):
+                index += 1
+            pair = [liste_jr[0], liste_jr[index]]
+            liste_jr[0]["opposants"].append(liste_jr[index]["id"])
+            liste_jr[index]["opposants"].append(liste_jr[0]["id"])
+            del liste_jr[index]
+            del liste_jr[0]
             pairs.append(pair)
         return pairs
 
@@ -135,7 +138,6 @@ class TournoisContoller:
         return None
 
     def generer_matchs(self, tr):
-        ## FIXME unicity of matchs + order
         matchs = self.random_matchs(tr)
         list_matchs = []
         if matchs:
@@ -211,7 +213,7 @@ class TournoisContoller:
 
     def get_sorted_joueurs(self, tr):
             list = sorted(tr["list_joueur"], key=lambda jr: (jr["nom"], jr["prenom"]))
-            self.tournois_view.print_titles()
+            self.tournois_view.print_titles_jr()
             for j in list:
                 self.print_infos_jr(j)
 
@@ -219,4 +221,47 @@ class TournoisContoller:
         self.tournois_view.print_jr_infos(
             jr["nom"],
             jr["prenom"],
-            jr["date_naissance"])
+            jr["date_naissance"],
+            jr["points"])
+
+    def print_infos_tour(self, t):
+        self.tournois_view.print_tour_infos(
+            t["nom"])
+
+
+    def print_infos_match(self, m, i):
+        self.tournois_view.print_match_infos(
+            i,
+            m["joueur_1"],
+            m["score_joueur_1"],
+            m["joueur_2"],
+            m["score_joueur_2"])
+
+    def sort_joueur_score(self, tr):
+        list = sorted(tr["list_joueur"], key=lambda jr: (jr["points"]), reverse=True)
+        self.tournois_view.print_titles_jr()
+        for j in list:
+            self.print_infos_jr(j)
+
+    def get_tous_tours(self, tr):
+            list = sorted(tr["tours"], key=lambda t: (t["nom"]))
+            if list:
+                self.tournois_view.print_titles_tour()
+                for t in list:
+                    matchs = t["matchs"]
+                    self.print_infos_tour(t)
+                    i = 1
+                    for m in matchs:
+                        self.print_infos_match(m, i)
+                        i = i+1
+
+    def get_tournoi_nom(self):
+        Tournoi = Query()
+        str = self.tournois_view.get_string_value("Le nom", " Tournoi à chercher : ")
+        tournoi = self.tournois.get(Tournoi.nom == str)
+        if tournoi:
+            print(f'{"=" * 75}')
+            print("Tournoi : " + tournoi["nom"] + " Début : " + tournoi["date_debut"] + " Fin le : " + tournoi["date_fin"])
+            print(f'{"=" * 75}')
+        else:
+            print("Impossible de trouver le tournoi." )

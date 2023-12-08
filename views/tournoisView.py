@@ -55,23 +55,58 @@ class TournoisView:
                 return value
 
     @staticmethod
+    def print_tour_infos(
+            nom: str
+    ):
+        print(
+            f"{nom.center(20)}"
+            f"\n{'*' * 85}")
+
+    @staticmethod
+    def print_match_infos(
+            indx: int,
+            joueur_1: str,
+            score_joueur_1: float,
+            joueur_2: str,
+            score_joueur_2: float
+    ):
+        print(
+            f"* Match {indx} : "
+            f"{joueur_1.center(20)} vs "
+            f"{joueur_2.center(20)} "
+            f"{score_joueur_1} - "
+            f"{score_joueur_2}"
+            f"\n")
+
+    @staticmethod
     def print_jr_infos(
             nom: str,
             prenom: str,
-            date_naissance: str
+            date_naissance: str,
+            points: float
     ):
         print(
             f"{nom.center(25)} | "
             f"{prenom.center(25)} | "
-            f"{date_naissance.center(20)}"
+            f"{date_naissance.center(25)} | "
+            f"{points}"
             f"\n{'-' * 119}")
 
     @staticmethod
-    def print_titles():
+    def print_titles_jr():
         print("")
-        print(f'{"=" * 90}')
+        print(f'{"=" * 119}')
         print(
             f"{'NOM'.center(25)} | "
             f"{'PRENOM'.center(25)} | "
-            f"{'DATE_DE_NAISSANCE'.center(20)}"
-            f"\n{'*' * 90}")
+            f"{'date_naissance'.center(25)} | "
+            f"{'SCORE'.center(20)}"
+            f"\n{'*' * 119}")
+
+    @staticmethod
+    def print_titles_tour():
+        print("")
+        print(f'{"=" * 119}')
+        print(
+            f"{'LISTE DES TOURS'.center(25)}"
+            f"\n{'*' * 119}")
