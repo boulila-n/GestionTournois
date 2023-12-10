@@ -1,6 +1,5 @@
 
 from abc import ABC
-from datetime import datetime
 from services.serviceutils import (is_valid_date, datetime_to_str)
 
 
@@ -31,20 +30,21 @@ class MenuView(ABC):
         print(f'{"=" * 119}')
         print(f'{"* MENU TOURNOIS*"}'.center(119))
         if tournoi and tournoi["nom"]:
-            print("###### TOURNOI : ", tournoi["nom"], "| JOUEURS : " , self.nbr_jr_ajoutes(tournoi), "| TOURS : ", nbr_tours, "/", max_tour)
+            print("###### TOURNOI : ", tournoi["nom"], "| JOUEURS : ",
+                  self.nbr_jr_ajoutes(tournoi), "| TOURS : ",
+                  nbr_tours, "/", max_tour)
         print("1. Ajouter des joueurs.")
         if total == nbr_jrs and nbr_tours < max_tour:
-            print("2. Lancer le TOUR N° :", (len(tournoi["tours"]) +1))
+            print("2. Lancer le TOUR N° :", (len(tournoi["tours"]) + 1))
         elif max_tour == nbr_tours:
             print("*. Le Tournoi est terminé ! ")
         else:
-            print("*.Le tournoi commencera avec tour 1 ")
+            print("____Le tournoi commencera avec tour 1____ ")
         print("3. Afficher la liste des participants par classement.")
         print("4. Afficher la liste des participants par ordre alphabétique.")
         print("5. Afficher la liste de tours et tous les matchs du tour.")
         print("0. Quitter le tournoi.")
         print(f'{"=" * 119}')
-
 
     @staticmethod
     def get_choix(nbrchoix):
@@ -66,7 +66,8 @@ class MenuView(ABC):
         value = input(f"Veuillez saisir {attribut_1} du {attribut_2}: ")
         if not value:
             print("Votre saisie n'a pas été comprise")
-            value = input(f"veuillez rééssayer d'indiquer {attribut_1} du {attribut_2}: ")
+            value = input(f"veuillez rééssayer d'indiquer {attribut_1}"
+                          f" du {attribut_2}: ")
         else:
             print(f"{attribut_1} du {attribut_2} est : {value}")
             return value
@@ -75,12 +76,14 @@ class MenuView(ABC):
     def get_date(self, a1, a2):
         value = ""
         while not datetime_to_str(is_valid_date(value)):
-            value = input(f"Veuillez saisir {a1} du {a2}: au format dd/MM/yyyy : ")
+            value = input(f"Veuillez saisir {a1} du {a2}: "
+                          f"au format dd/MM/yyyy : ")
             if not value:
-                print("Votre saisie n'a pas été comprise")
-                print(f"veuillez rééssayer d'indiquer {a1} du {a2} au format dd/MM/yyyy : ")
+                print("Votre saisie n'a pas "
+                      "été comprise")
+                print(f"veuillez rééssayer d'indiquer {a1} du {a2} "
+                      f"au format dd/MM/yyyy : ")
             else:
                 if datetime_to_str(is_valid_date(value)):
                     print(f"{a1} du {a2} est : {value}")
                     return value
-

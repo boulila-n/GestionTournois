@@ -16,7 +16,7 @@ class TournoisView:
             f"{'Date de début'.center(13)} | "
             f"{'Date de fin'.center(13)} | "
             f"{'Description'.center(20)} | "
-            f"{'Nbre joueur max'.center(10)} "
+            f"{'Nbre de joueurs'.center(10)} "
             f"\n{'*' * 140}")
 
     @staticmethod
@@ -44,15 +44,23 @@ class TournoisView:
             f"\n{''}")
 
     def get_string_value(self, first_argument: str, second_argument: str):
+        value = input(f"Veuillez saisir {first_argument} "
+                      f"du {second_argument}: ")
+        if not value:
+            print("Votre saisie n'a pas été comprise")
+            print(f"veuillez rééssayer d'indiquer {first_argument}"
+                  f" du {second_argument}")
+        else:
+            return value
 
-            value = input(f"Veuillez saisir {first_argument} du {second_argument}: ")
-            if not value:
-                print("Votre saisie n'a pas été comprise")
-                print(
-                    f"veuillez rééssayer d'indiquer {first_argument} du {second_argument}"
-                )
-            else:
-                return value
+    def get_default_value(self, first_argument: str, second_argument: str):
+        value = input(f"Veuillez saisir {first_argument} "
+                      f"du {second_argument}: ")
+        if value and not value.isnumeric():
+            value = input(f"Veuillez saisir {first_argument} "
+                          f"du {second_argument}: ")
+        else:
+            return value
 
     @staticmethod
     def print_tour_infos(

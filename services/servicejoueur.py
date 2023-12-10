@@ -5,11 +5,11 @@ class ServiceJoueur:
     def __int__(self):
         pass
 
-    def serialize_joueur(self, jr:Joueur):
+    def serialize_joueur(self, jr: Joueur):
         return {
-        "prenom": jr.prenom,
-        "nom": jr.nom,
-        "date_naissance": jr.date_naissance,
-        "rang": jr.rang,
-        "points": jr.points
-    }
+            "prenom": jr.prenom,
+            "nom": jr.nom,
+            "date_naissance": jr.date_naissance,
+            "rang": jr.rang,
+            "points": jr.points
+        }

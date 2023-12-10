@@ -11,7 +11,7 @@ def is_valid_date(str):
                 int(string_match.group(3)),
                 int(string_match.group(2)),
                 int(string_match.group(1)))
-        except ValueError as exception:
+        except ValueError:
             return False
         return date
     else:

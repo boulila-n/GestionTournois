@@ -9,7 +9,7 @@ class Main:
     def __init__(self):
         self.joueur_controller = JoueurController()
         self.tournois_controller = TournoisContoller()
-        self.service_tornoi = ServiceTournois()
+        self.service_tournoi = ServiceTournois()
 
     def menu_principal(self):
         choix = ""
@@ -18,14 +18,14 @@ class Main:
             choix = self.joueur_controller.menu_view.get_choix(9)
             self.appliquer_choix(choix)
 
-    def menu_tournois(self,tournoi):
+    def menu_tournois(self, tournoi):
         choix = ""
         while choix != 0:
             self.tournois_controller.menu_view.print_menu_tournois(tournoi)
             choix = self.tournois_controller.menu_view.get_choix(7)
-            self.appliquer_choix_tournois(choix,tournoi)
+            self.appliquer_choix_tournois(choix, tournoi)
 
-    def appliquer_choix(self, user_choix:int):
+    def appliquer_choix(self, user_choix: int):
         if user_choix == 1:
             self.ajouter_nv_joueur(tournoi=None)
         elif user_choix == 2:
@@ -73,7 +73,7 @@ class Main:
         if tournoi:
             nbr = len(tournoi["list_joueur"])
             total = tournoi["nbr_jr"]
-            tr = self.service_tornoi.deserialize_tournois(tournoi)
+            tr = self.service_tournoi.deserialize_tournois(tournoi)
             if total - nbr > 0:
                 idj = self.sasie_joueur_id()
                 inserted_jr = self.joueur_controller.get_joueur_id(idj)
@@ -82,7 +82,8 @@ class Main:
                 if inserted_jr:
                     tr.list_joueur.append(inserted_jr)
                 else:
-                    print("Joueur introuvable dans la base, veuillez réssayer !")
+                    print("Joueur introuvable dans la base,"
+                          " veuillez réssayer !")
             else:
                 print(" *** La liste joueurs est compelte ***")
 
@@ -92,11 +93,13 @@ class Main:
 
     def sasie_joueur_id(self):
         self.afficher_joueurs()
-        id = input(print(f"Veuillez saisir l'id de joueur à ajouter ou Entrer vide pour saisir un nouveau joueur : "))
-        if not id:
+        idj = input(print(f'{"Veuillez saisir lid de joueur à ajouter "}'
+                          f'{"ou Entrer vide pour saisir"}'
+                          f'{" un nouveau joueur : "}'))
+        if not idj:
             return self.joueur_controller.get_joueur_infos()
         else:
-            return id
+            return idj
 
     def afficher_joueurs(self):
         self.joueur_controller.sort_joueurs_alpha()

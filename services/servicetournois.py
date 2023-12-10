@@ -23,17 +23,17 @@ class ServiceTournois:
         }
 
     def deserialize_tournois(self, tr):
-        ## (self, nom, lieu, date_debut, date_fin, description, nbr_jr, nbr_tour=4, list_joueur=[], tours = [])
-        tournoi = Tournoi(
-            tr["nom"],
-            tr["lieu"],
-            tr["date_debut"],
-            tr["date_fin"],
-            tr["description"],
-            tr["nbr_jr"],
-            tr["nbr_tour"],
-            tr["list_joueur"],
-            tr["tours"])
+        tournoi = (
+            Tournoi(
+                tr["nom"],
+                tr["lieu"],
+                tr["date_debut"],
+                tr["date_fin"],
+                tr["description"],
+                tr["nbr_jr"],
+                tr["nbr_tour"],
+                tr["list_joueur"],
+                tr["tours"]))
         tournoi.id = tr.doc_id
         return tournoi
 

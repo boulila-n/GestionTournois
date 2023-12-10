@@ -3,11 +3,9 @@ from views.menuView import MenuView
 from models.tournoi import Tournoi
 from models.match import Match
 from models.tour import Tour
-from models.joueur import Joueur
 from views.tournoisView import TournoisView
 from controllers.joueurController import JoueurController
 from tinydb import TinyDB
-import json
 from tinydb import Query
 from datetime import datetime
 
@@ -29,22 +27,36 @@ class TournoisContoller:
     def creer_tournois(self):
         nbr_turn_default = 4
         name = self.tournois_view.get_string_value("le nom", "tournoi")
-        location = self.tournois_view.get_string_value("la localisation", "tournoi")
-        start_date = self.menu_view.get_date(self, "la date du début", "tournoi")
-        end_date = self.menu_view.get_date(self, "la date de fin", "tournoi")
-        description = self.tournois_view.get_string_value("la description", "tournoi")
-        number_of_turn = self.tournois_view.get_string_value("le nombre", f"tours ou laisser vide ({nbr_turn_default} par défaut)")
+        location = self.tournois_view.get_string_value("la localisation",
+                                                       "tournoi")
+        start_date = self.menu_view.get_date(self, "la date du début",
+                                             "tournoi")
+        end_date = self.menu_view.get_date(self, "la date de fin",
+                                           "tournoi")
+        description = self.tournois_view.get_string_value("la description",
+                                                          "tournoi")
+        number_of_turn = (self.tournois_view
+                          .get_default_value("le nombre",
+                                             f"tours "
+                                             f"ou laisser vide"
+                                             f"({nbr_turn_default}"
+                                             f" par défaut)"))
         if number_of_turn:
             number_of_turn = int(number_of_turn)
         else:
             number_of_turn = nbr_turn_default
         nbr_jr = 0
-        while nbr_jr < 2 or nbr_jr % 2 != 0  :
-            nbr_jr = self.tournois_view.get_string_value("le nombre", "joueurs (* nombre pair au moins égal à deux *)")
+        while nbr_jr < 2 or nbr_jr % 2 != 0:
+            nbr_jr = (self.tournois_view
+                      .get_string_value("le nombre",
+                                        "joueurs "
+                                        "(* nombre pair "
+                                        "au moins égal à deux *)"))
             if nbr_jr:
                 nbr_jr = int(nbr_jr)
 
-        tournament = Tournoi(name, location, start_date, end_date, description, nbr_jr, number_of_turn)
+        tournament = Tournoi(name, location, start_date,
+                             end_date, description, nbr_jr, number_of_turn)
         new_id = self.sauvegarderTournois(tournament)
         print(f"Le tournoi {tournament.nom} a été crée avec succès")
         return self.get_tournoi_id(new_id)
@@ -57,12 +69,10 @@ class TournoisContoller:
             return self.tournois.__len__()
 
     def selectioner_tournoi(self):
-        value = input(f"Veuillez saisir l'id tournoi choisi : ")
+        value = input(f'{"Veuillez saisir l id tournoi choisi : "}')
         if not value:
             print("Votre saisie n'a pas été comprise")
-            print(
-                f"veuillez rééssayer d'indiquer l'id de tournoi"
-            )
+            print(f'{"veuillez réessayer d indiquer l id de tournoi"}')
         else:
             return value
 
@@ -77,7 +87,8 @@ class TournoisContoller:
             tr["nbr_jr"])
 
     def sauvegarderTournois(self, tr: Tournoi):
-        return self.tournois.insert(self.service_tournois.serialize_tournois(tr))
+        return self.tournois.insert(self
+                                    .service_tournois.serialize_tournois(tr))
 
     def get_tournoi_id(self, id: int):
         tournoi = self.tournois.get(doc_id=int(id))
@@ -87,14 +98,17 @@ class TournoisContoller:
 
     def update_tournoi(self, tournoi):
         self.tournois.update(
-            self.service_tournois.serialize_tournois(tournoi), doc_ids=[tournoi.id])
+            self.service_tournois.serialize_tournois(tournoi),
+            doc_ids=[tournoi.id])
 
     def random_matchs(self, tr):
         pairs = []
-        liste_jr = sorted(tr["list_joueur"], key=lambda jr: (jr["points"]), reverse=True)
+        liste_jr = sorted(tr["list_joueur"],
+                          key=lambda jr: (jr["points"]), reverse=True)
         while liste_jr:
             index = 1
-            while (index <= len(liste_jr) and len(liste_jr) > 2 and liste_jr[index]["id"] in liste_jr[0]["opposants"]):
+            while (index <= len(liste_jr) and len(liste_jr) > 2
+                   and liste_jr[index]["id"] in liste_jr[0]["opposants"]):
                 index += 1
             pair = [liste_jr[0], liste_jr[index]]
             liste_jr[0]["opposants"].append(liste_jr[index]["id"])
@@ -120,8 +134,8 @@ class TournoisContoller:
         matchs = self.generer_matchs(tr)
         round = Tour(name, str(created_at), matchs)
         tours = self.get_tr_tours(tr)
-    ##self.update_tours(tours, tournoi, round)
-        db_round = self.entrer_resultats_matchs(self.service_tournois.serialize_tour(round), tr)
+        db_round = self.entrer_resultats_matchs(
+            self.service_tournois.serialize_tour(round), tr)
         self.update_tours(tours, tournoi, db_round)
         return self.get_tournoi_id(tr.doc_id)
 
@@ -152,7 +166,8 @@ class TournoisContoller:
                 self.set_points_jr(tr, m["joueur_1"], m["score_joueur_1"])
                 self.set_points_jr(tr, m["joueur_2"], m["score_joueur_2"])
             tour["termine"] = True
-            tour["date_fin"] = str(datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            tour["date_fin"] = str(datetime.now()
+                                   .strftime("%Y-%m-%d %H:%M:%S"))
             return tour
         else:
             print(" *** Veuillez réssayer votre choix ***")
@@ -190,14 +205,14 @@ class TournoisContoller:
     def si_jr1_gagne(jr):
         rep = None
         while rep is None or rep.upper() not in ["Y", "N"]:
-            rep = input(f"Le joueur " + jr + "a gagné ou non ? (Y/N): ")
+            rep = input(f'{"Le joueur " + jr + "a gagné ou non ? (Y/N): "}')
         return rep.upper()
 
     @staticmethod
     def si_match_null():
         rep = None
         while rep is None or rep.upper() not in ["Y", "N"]:
-            rep = input(f"Le match est null ? (Y par défaut/N): ")
+            rep = input(f'{"Le match est null ? (Y par défaut/N): "}')
         return rep.upper()
 
     @staticmethod
@@ -212,10 +227,11 @@ class TournoisContoller:
             return confirm
 
     def get_sorted_joueurs(self, tr):
-            list = sorted(tr["list_joueur"], key=lambda jr: (jr["nom"], jr["prenom"]))
-            self.tournois_view.print_titles_jr()
-            for j in list:
-                self.print_infos_jr(j)
+        list = sorted(tr["list_joueur"],
+                      key=lambda jr: (jr["nom"], jr["prenom"]))
+        self.tournois_view.print_titles_jr()
+        for j in list:
+            self.print_infos_jr(j)
 
     def print_infos_jr(self, jr):
         self.tournois_view.print_jr_infos(
@@ -228,7 +244,6 @@ class TournoisContoller:
         self.tournois_view.print_tour_infos(
             t["nom"])
 
-
     def print_infos_match(self, m, i):
         self.tournois_view.print_match_infos(
             i,
@@ -238,30 +253,34 @@ class TournoisContoller:
             m["score_joueur_2"])
 
     def sort_joueur_score(self, tr):
-        list = sorted(tr["list_joueur"], key=lambda jr: (jr["points"]), reverse=True)
+        list = sorted(tr["list_joueur"],
+                      key=lambda jr: (jr["points"]), reverse=True)
         self.tournois_view.print_titles_jr()
         for j in list:
             self.print_infos_jr(j)
 
     def get_tous_tours(self, tr):
-            list = sorted(tr["tours"], key=lambda t: (t["nom"]))
-            if list:
-                self.tournois_view.print_titles_tour()
-                for t in list:
-                    matchs = t["matchs"]
-                    self.print_infos_tour(t)
-                    i = 1
-                    for m in matchs:
-                        self.print_infos_match(m, i)
-                        i = i+1
+        list = sorted(tr["tours"], key=lambda t: (t["nom"]))
+        if list:
+            self.tournois_view.print_titles_tour()
+            for t in list:
+                matchs = t["matchs"]
+                self.print_infos_tour(t)
+                i = 1
+                for m in matchs:
+                    self.print_infos_match(m, i)
+                    i = i + 1
 
     def get_tournoi_nom(self):
         Tournoi = Query()
-        str = self.tournois_view.get_string_value("Le nom", " Tournoi à chercher : ")
+        str = self.tournois_view.get_string_value("Le nom",
+                                                  " Tournoi à chercher ")
         tournoi = self.tournois.get(Tournoi.nom == str)
         if tournoi:
             print(f'{"=" * 75}')
-            print("Tournoi : " + tournoi["nom"] + " Début : " + tournoi["date_debut"] + " Fin le : " + tournoi["date_fin"])
+            print("Tournoi : " + tournoi["nom"] + " Début : "
+                  + tournoi["date_debut"]
+                  + " Fin le : " + tournoi["date_fin"])
             print(f'{"=" * 75}')
         else:
-            print("Impossible de trouver le tournoi." )
+            print("Impossible de trouver le tournoi.")

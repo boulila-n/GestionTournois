@@ -1,9 +1,9 @@
-from models.joueur import Joueur
 
 
 class Tournoi:
 
-    def __init__(self, nom, lieu, date_debut, date_fin, description, nbr_jr, nbr_tour=4, list_joueur=[], tours = []):
+    def __init__(self, nom, lieu, date_debut, date_fin, description, nbr_jr,
+                 nbr_tour=4, list_joueur=[], tours=[]):
         """constructor"""
         self.nom = nom
         self.lieu = lieu
@@ -14,6 +14,3 @@ class Tournoi:
         self.list_joueur = list_joueur
         self.tours = tours
         self.nbr_tour = nbr_tour
-
-
-
