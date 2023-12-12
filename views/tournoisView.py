@@ -1,6 +1,7 @@
+from views.menuView import MenuView
 
 
-class TournoisView:
+class TournoisView(MenuView):
 
     def __int__(self):
         pass

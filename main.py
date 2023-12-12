@@ -14,15 +14,15 @@ class Main:
     def menu_principal(self):
         choix = ""
         while choix != 0:
-            self.joueur_controller.menu_view.print_menu()
-            choix = self.joueur_controller.menu_view.get_choix(9)
+            self.joueur_controller.joueur_view.print_menu()
+            choix = self.joueur_controller.joueur_view.get_choix(9)
             self.appliquer_choix(choix)
 
     def menu_tournois(self, tournoi):
         choix = ""
         while choix != 0:
-            self.tournois_controller.menu_view.print_menu_tournois(tournoi)
-            choix = self.tournois_controller.menu_view.get_choix(7)
+            self.tournois_controller.tournois_view.print_menu_tournois(tournoi)
+            choix = self.tournois_controller.tournois_view.get_choix(7)
             self.appliquer_choix_tournois(choix, tournoi)
 
     def appliquer_choix(self, user_choix: int):
@@ -64,7 +64,7 @@ class Main:
     def exit_program(self):
         confirm = self.tournois_controller.get_confirmation()
         if confirm == "Y":
-            self.joueur_controller.menu_view.exit_program()
+            self.joueur_controller.joueur_view.exit_program()
             sys.exit()
         else:
             self.menu_principal()

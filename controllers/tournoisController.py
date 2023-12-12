@@ -1,5 +1,4 @@
 from services.servicetournois import ServiceTournois
-from views.menuView import MenuView
 from models.tournoi import Tournoi
 from models.match import Match
 from models.tour import Tour
@@ -20,7 +19,6 @@ class TournoisContoller:
         """constructor"""
         self.tournois = tournois
         self.tournois_view = TournoisView()
-        self.menu_view = MenuView()
         self.service_tournois = ServiceTournois()
         self.joueur_controller = JoueurController()
 
@@ -29,9 +27,9 @@ class TournoisContoller:
         name = self.tournois_view.get_string_value("le nom", "tournoi")
         location = self.tournois_view.get_string_value("la localisation",
                                                        "tournoi")
-        start_date = self.menu_view.get_date(self, "la date du début",
+        start_date = self.tournois_view.get_date(self, "la date du début",
                                              "tournoi")
-        end_date = self.menu_view.get_date(self, "la date de fin",
+        end_date = self.tournois_view.get_date(self, "la date de fin",
                                            "tournoi")
         description = self.tournois_view.get_string_value("la description",
                                                           "tournoi")
